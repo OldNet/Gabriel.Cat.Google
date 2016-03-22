@@ -140,8 +140,8 @@ namespace Gabriel.Cat.Google
             const string CLIENTID="#ClientId#";
             const string URLREDIRECT="#UrlRedirigir#";
             string htmlBasicoLogin = Resource.htmlPaginaBasicaLoginGooglePlus;
-            htmlBasicoLogin.Replace(CLIENTID, ClientId);
-            htmlBasicoLogin.Replace(URLREDIRECT, RedirectUriLocalhost);
+            htmlBasicoLogin = htmlBasicoLogin.Replace(CLIENTID, ClientId);
+            htmlBasicoLogin = htmlBasicoLogin.Replace(URLREDIRECT,  RedirectUriLocalhost );
             return htmlBasicoLogin;
         }
 
