@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -15,20 +15,27 @@ namespace Gabriel.Cat.Google
     {
         class Token
         {
+            private Token() { }
+            public string AccessToken { get; private set; }
 
-            public string AccessToken { get; set; }
+            public string TokenType { get; private set; }
 
-            public string TokenType { get; set; }
+            public string ExpiresIn { get; private set; }
 
-            public string ExpiresIn { get; set; }
+            public string IdToken { get; private set; }
 
-            public string IdToken { get; set; }
-
-            public string RefreshToken { get; set; }
+            public string RefreshToken { get; private set; }
 
             public static Token JsonToToken(string jSon)
             {
-                return JsonConvert.DeserializeObject<Token>(jSon);
+                System.Xml.XmlDictionaryReader diccionario=  JsonReaderWriterFactory.CreateJsonReader(new MemoryStream(System.Text.ASCIIEncoding.Unicode.GetBytes(jSon)), new System.Xml.XmlDictionaryReaderQuotas());
+                Token token = new Token();
+                token.AccessToken = diccionario["access_token"];
+                token.ExpiresIn = diccionario["expires_in"];
+                token.IdToken = diccionario["id_token"];
+                token.RefreshToken = diccionario["refresh_token"];
+                token.TokenType = diccionario["token_type"];
+                return token;
             }
         }
 
@@ -38,19 +45,21 @@ namespace Gabriel.Cat.Google
         /// </summary>
         public static string RedirectUriLocalhost { get; set; }
         public static string ClientSecret { get; set; }
+
         #region clase user login
+        private GooglePlusUser() { }
         Bitmap picture = null;
-        public string Id { get; set; }
+        public string Id { get; private set; }
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
-        public string GivenName { get; set; }
+        public string GivenName { get; private set; }
 
-        public string FamilyName { get; set; }
+        public string FamilyName { get; private set; }
 
-        public string Link { get; set; }
+        public string Link { get; private set; }
 
-        public string PictureUri { get; set; }
+        public string PictureUri { get; private set; }
         public Bitmap Picture
         {
             get
@@ -65,9 +74,9 @@ namespace Gabriel.Cat.Google
                 return picture;
             }
         }
-        public string Gender { get; set; }
+        public string Gender { get; private set; }
 
-        public string Locale { get; set; }
+        public string Locale { get; private set; }
 
         #endregion
         #region Get User login
@@ -80,9 +89,9 @@ namespace Gabriel.Cat.Google
         {
             GooglePlusUser profile = null;
             Token token;
-            //consigo token valido
+            //consigo user valido
             token = await GetAccessToken(returnUrl);
-            //uso el token para obtener los datos del usuario
+            //uso el user para obtener los datos del usuario
             profile = await GetUserInfo(token);
             return profile;
         }
@@ -107,7 +116,7 @@ namespace Gabriel.Cat.Google
             string jSonToken;
 
             contentToken.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");//mirar que sea esta string
-            response = await client.PostAsync("https://accounts.google.com/o/oauth2/token", contentToken);
+            response = await client.PostAsync("https://accounts.google.com/o/oauth2/user", contentToken);
             jSonToken = await response.Content.ReadAsStringAsync(); // could also use ReadAsStreamAsync and avoid conversion to Stream
 
             return Token.JsonToToken(jSonToken);
@@ -115,7 +124,7 @@ namespace Gabriel.Cat.Google
 
 
         #endregion
-        #region obtener datos usuario con token
+        #region obtener datos usuario con user
         static async Task<GooglePlusUser> GetUserInfo(Token token)
         {
             string query = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + token.AccessToken;
@@ -127,9 +136,19 @@ namespace Gabriel.Cat.Google
 
         #endregion
         #endregion
-        public static GooglePlusUser JsonToGooglePlusUser(string jSon)
+        public  static GooglePlusUser JsonToGooglePlusUser(string jSon)
         {
-            return JsonConvert.DeserializeObject<GooglePlusUser>(jSon);
+            System.Xml.XmlDictionaryReader diccionario = JsonReaderWriterFactory.CreateJsonReader(new MemoryStream(System.Text.ASCIIEncoding.Unicode.GetBytes(jSon)), new System.Xml.XmlDictionaryReaderQuotas());
+            GooglePlusUser user = new GooglePlusUser();
+            user.Id = diccionario["id"];
+            user.Name = diccionario["name"];
+            user.GivenName = diccionario["given_name"];
+            user.FamilyName = diccionario["family_name"];
+            user.Link = diccionario["link"];
+            user.PictureUri = diccionario["picture_uri"];
+            user.Gender = diccionario["gender"];
+            user.Locale = diccionario["locale"];
+            return user;
         }
         /// <summary>
         /// Obtiene un html para poder hacer login a la app (se tiene que configurar antes)
