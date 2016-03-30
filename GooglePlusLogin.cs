@@ -51,7 +51,7 @@ namespace Gabriel.Cat.Google
         Bitmap picture = null;
         public string Id { get; private set; }
 
-        public string Name { get; private set; }
+        public string Nombre { get; private set; }
 
         public string GivenName { get; private set; }
 
@@ -59,8 +59,8 @@ namespace Gabriel.Cat.Google
 
         public string Link { get; private set; }
 
-        public string PictureUri { get; private set; }
-        public Bitmap Picture
+        public string ImagenPerfilUri { get; private set; }
+        public Bitmap ImagenPerfil
         {
             get
             {
@@ -69,7 +69,7 @@ namespace Gabriel.Cat.Google
                 {
                     //la descargo
                     client = new System.Net.WebClient();
-                    picture = (Bitmap)Bitmap.FromStream(new MemoryStream(client.DownloadData(PictureUri)));
+                    picture = (Bitmap)Bitmap.FromStream(new MemoryStream(client.DownloadData(ImagenPerfilUri)));
                 }
                 return picture;
             }
@@ -141,11 +141,11 @@ namespace Gabriel.Cat.Google
             System.Xml.XmlDictionaryReader diccionario = JsonReaderWriterFactory.CreateJsonReader(new MemoryStream(System.Text.ASCIIEncoding.Unicode.GetBytes(jSon)), new System.Xml.XmlDictionaryReaderQuotas());
             GooglePlusUser user = new GooglePlusUser();
             user.Id = diccionario["id"];
-            user.Name = diccionario["name"];
+            user.Nombre = diccionario["name"];
             user.GivenName = diccionario["given_name"];
             user.FamilyName = diccionario["family_name"];
             user.Link = diccionario["link"];
-            user.PictureUri = diccionario["picture_uri"];
+            user.ImagenPerfilUri = diccionario["picture_uri"];
             user.Gender = diccionario["gender"];
             user.Locale = diccionario["locale"];
             return user;
