@@ -8,7 +8,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Drawing;
-
+using Gabriel.Cat.Extension;
 namespace Gabriel.Cat.Google
 {
     public class GooglePlusUser
@@ -85,13 +85,13 @@ namespace Gabriel.Cat.Google
         /// </summary>
         /// <param name="returnUrl">es la url resultado que viene del login de google</param>
         /// <returns>null if acces is denied</returns>
-        public static async Task<GooglePlusUser> GetProfileAsync(string returnUrl)
+        public static async Task<GooglePlusUser> GetProfileAsync(Uri returnUrl)
         {
             GooglePlusUser profile = null;
             Token token;
-            //consigo user valido
-            token = await GetAccessToken(returnUrl);
-            //uso el user para obtener los datos del usuario
+            //consigo token valido
+            token = await GetAccessToken(returnUrl.GetHttpValueArgument("token"));
+            //uso el token para obtener los datos del usuario
             profile = await GetUserInfo(token);
             return profile;
         }
@@ -101,7 +101,7 @@ namespace Gabriel.Cat.Google
         /// </summary>
         /// <param name="returnUrl">es la url resultado que viene del login de google</param>
         /// <returns>null if acces is denied</returns>
-        public static GooglePlusUser GetProfile(string returnUrl)
+        public static GooglePlusUser GetProfile(Uri returnUrl)
         {
             Task<GooglePlusUser> tskUsuarioGoogle = GetProfileAsync(returnUrl);
             tskUsuarioGoogle.Wait();
@@ -110,6 +110,9 @@ namespace Gabriel.Cat.Google
         #region Obtener Token valido
         static async Task<Token> GetAccessToken(string code)
         {
+            if (String.IsNullOrEmpty(code))
+                throw new ArgumentException("the code is required to recibe token!");
+
             StringContent contentToken = new StringContent("code=" + code + "&client_id=" + ClientId + "&client_secret=" + ClientSecret + "&redirect_uri=" + RedirectUriLocalhost + "&grant_type=authorization_code");
             HttpClient client = new HttpClient();
             HttpResponseMessage response;
