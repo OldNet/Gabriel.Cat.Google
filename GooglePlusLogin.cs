@@ -80,6 +80,10 @@ namespace Gabriel.Cat.Google
 
         #endregion
         #region Get User login
+        public static GooglePlusUser GetProfile(Gabriel.Cat.Xarxa.ClienteServidorHttpSeguro cliente)
+        {
+            return GetProfile(cliente.Client);
+        }
         public static GooglePlusUser GetProfile(System.Net.HttpListenerContext context) {
             return GetProfile(context.Request.Url);
         }

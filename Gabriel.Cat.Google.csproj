@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gabriel.Cat.Utilitats">
+      <HintPath>C:\Users\Pingu\Programacion\Gabriel.Cat.Utilitats\Gabriel.Cat.Utilitats\bin\Release\Gabriel.Cat.Utilitats.dll</HintPath>
+    </Reference>
+    <Reference Include="Gabriel.Cat.Xarxa">
+      <HintPath>C:\Users\Pingu\Programacion\Gabriel.Cat.Xarxa\bin\Release\Gabriel.Cat.Xarxa.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -56,12 +62,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="C:\Users\Pingu\Programacion\Gabriel.Cat.Xarxa\Gabriel.Cat.Xarxa.csproj">
-      <Project>{ef2fc201-9206-42a8-9c34-cc8f7277d2f5}</Project>
-      <Name>Gabriel.Cat.Xarxa</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
