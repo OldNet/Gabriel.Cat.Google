@@ -80,6 +80,9 @@ namespace Gabriel.Cat.Google
 
         #endregion
         #region Get User login
+        public static GooglePlusUser GetProfile(System.Net.HttpListenerContext context) {
+            return GetProfile(context.Request.Url);
+        }
         /// <summary>
         /// Devuelve un perfil google plus con los datos de él
         /// </summary>
