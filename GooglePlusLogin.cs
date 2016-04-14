@@ -85,19 +85,20 @@ namespace Gabriel.Cat.Google
             return GetProfile(cliente.Client);
         }
         public static GooglePlusUser GetProfile(System.Net.HttpListenerContext context) {
-            return GetProfile(context.Request.Url);
+          //  return GetProfile(context.Request.Url.Fragment);
+            return GetProfile(context.Request.QueryString["code"]);
         }
         /// <summary>
         /// Devuelve un perfil google plus con los datos de él
         /// </summary>
-        /// <param name="returnUrl">es la url resultado que viene del login de google</param>
+        /// <param name="code">es la url resultado que viene del login de google</param>
         /// <returns>null if acces is denied</returns>
-        public static async Task<GooglePlusUser> GetProfileAsync(Uri returnUrl)
+        public static async Task<GooglePlusUser> GetProfileAsync(string code)
         {
             GooglePlusUser profile = null;
             Token token;
             //consigo token valido
-            token = await GetAccessToken(returnUrl.GetHttpValueArgument("token"));
+            token = await GetAccessToken(code);
             //uso el token para obtener los datos del usuario
             profile = await GetUserInfo(token);
             return profile;
@@ -106,11 +107,11 @@ namespace Gabriel.Cat.Google
         /// <summary>
         /// Devuelve un perfil google plus con los datos de él
         /// </summary>
-        /// <param name="returnUrl">es la url resultado que viene del login de google</param>
+        /// <param name="code">es la url resultado que viene del login de google</param>
         /// <returns>null if acces is denied</returns>
-        public static GooglePlusUser GetProfile(Uri returnUrl)
+        public static GooglePlusUser GetProfile(string code)
         {
-            Task<GooglePlusUser> tskUsuarioGoogle = GetProfileAsync(returnUrl);
+            Task<GooglePlusUser> tskUsuarioGoogle = GetProfileAsync(code);
             tskUsuarioGoogle.Wait();
             return tskUsuarioGoogle.Result;
         }

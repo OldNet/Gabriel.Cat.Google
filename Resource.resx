@@ -128,7 +128,7 @@
     var CLIENTID = '#ClientId#';  
     var REDIRECT = '#UrlRedirigir#';  
     var LOGOUT = 'http://accounts.google.com/Logout';  
-    var TYPE = 'token';  
+    var TYPE = 'code';  
     var _url = OAUTHURL + 'scope=' + SCOPE + '&amp;client_id=' + CLIENTID + '&amp;redirect_uri=' + REDIRECT + '&amp;response_type=' + TYPE;  
     var acToken;  
     var tokenType;  
