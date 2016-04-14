@@ -43,17 +43,22 @@ namespace Gabriel.Cat.Google
         #region clase user login
         public GooglePlusUser() { }
         Bitmap picture = null;
-        public string Id { get; private set; }
-
-        public string Nombre { get; private set; }
-
-        public string GivenName { get; private set; }
-
-        public string FamilyName { get; private set; }
-
-        public string Link { get; private set; }
-
-        public string ImagenPerfilUri { get; private set; }
+         [JsonProperty("id")]
+        public string Id { get;  set; }
+        [JsonProperty("name")]
+        public string NombreCompleto { get;  set; }
+         [JsonProperty("given_name")]
+        public string Nombre { get;  set; }
+         [JsonProperty("family_name")]
+        public string Apellidos { get;  set; }
+        [JsonProperty("verified_email")]
+         public bool EmailVerificado { get; set; }
+        [JsonProperty("email")]
+        public string Email{ get; set; }
+        [JsonProperty("link")]
+        public string Link { get;  set; }
+        [JsonProperty("picture")]
+        public string ImagenPerfilUri { get;  set; }
         public Bitmap ImagenPerfil
         {
             get
@@ -68,9 +73,10 @@ namespace Gabriel.Cat.Google
                 return picture;
             }
         }
-        public string Gender { get; private set; }
-
-        public string Locale { get; private set; }
+         [JsonProperty("gender")]
+        public string Genero { get;  set; }
+         [JsonProperty("locale")]
+        public string Locale { get;  set; }
 
         #endregion
         #region Get User login
@@ -121,7 +127,7 @@ namespace Gabriel.Cat.Google
             string jSonToken;
 
             contentToken.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");//mirar que sea esta string
-            response = await client.PostAsync("https://accounts.google.com/o/oauth2/token", contentToken);//coger la url correta :D
+            response = await client.PostAsync("https://accounts.google.com/o/oauth2/token", contentToken);//esta es la url correcta :D
             jSonToken = await response.Content.ReadAsStringAsync(); // could also use ReadAsStreamAsync and avoid conversion to Stream
 
             return Token.JsonToToken(jSonToken);
