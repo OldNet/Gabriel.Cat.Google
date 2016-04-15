@@ -164,6 +164,16 @@ namespace Gabriel.Cat.Google
             htmlBasicoLogin = htmlBasicoLogin.Replace(URLREDIRECT,  RedirectUriLocalhost );
             return htmlBasicoLogin;
         }
+        public static void LoadJsonCredentials(string path,int redirectUriIndex)
+        {
+        	Credenciales credenciales;
+        	if(File.Exists(path)){
+        		credenciales=JsonConvert.DeserializeObject<Credenciales>(File.ReadAllText(path));
+        		ClientId=credenciales.Web.ClientId;
+        		ClientSecret=credenciales.Web.ClientSecret;
+        		RedirectUriLocalhost=credenciales.Web.RedirectUris[redirectUriIndex];
+        	}
+        }
 
     }
 
