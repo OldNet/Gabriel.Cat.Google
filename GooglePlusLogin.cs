@@ -85,7 +85,6 @@ namespace Gabriel.Cat.Google
             return GetProfile(cliente.Client);
         }
         public static GooglePlusUser GetProfile(System.Net.HttpListenerContext context) {
-          //  return GetProfile(context.Request.Url.Fragment);
             return GetProfile(context.Request.QueryString["code"]);
         }
         /// <summary>
