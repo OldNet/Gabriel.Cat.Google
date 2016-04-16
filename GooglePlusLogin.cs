@@ -37,7 +37,7 @@ namespace Gabriel.Cat.Google
         /// <summary>
         /// Esta direccion recibira la url para obtener el usuario con GetProfile
         /// </summary>
-        public static string RedirectUriLocalhost { get; set; }
+        public static string RedirectUri { get; set; }
         public static string ClientSecret { get; set; }
 
         #region clase user login
@@ -121,7 +121,7 @@ namespace Gabriel.Cat.Google
             if (String.IsNullOrEmpty(code))
                 throw new ArgumentException("the code is required to recibe token!");
 
-            StringContent contentToken = new StringContent("code=" + code + "&client_id=" + ClientId + "&client_secret=" + ClientSecret + "&redirect_uri=" + RedirectUriLocalhost + "&grant_type=authorization_code");
+            StringContent contentToken = new StringContent("code=" + code + "&client_id=" + ClientId + "&client_secret=" + ClientSecret + "&redirect_uri=" + RedirectUri + "&grant_type=authorization_code");
             HttpClient client = new HttpClient();
             HttpResponseMessage response;
             string jSonToken;
@@ -161,7 +161,7 @@ namespace Gabriel.Cat.Google
             const string URLREDIRECT="#UrlRedirigir#";
             string htmlBasicoLogin = Resource.htmlPaginaBasicaLoginGooglePlus;
             htmlBasicoLogin = htmlBasicoLogin.Replace(CLIENTID, ClientId);
-            htmlBasicoLogin = htmlBasicoLogin.Replace(URLREDIRECT,  RedirectUriLocalhost );
+            htmlBasicoLogin = htmlBasicoLogin.Replace(URLREDIRECT,  RedirectUri );
             return htmlBasicoLogin;
         }
         public static void LoadJsonCredentials(string path,int redirectUriIndex)
@@ -171,7 +171,7 @@ namespace Gabriel.Cat.Google
         		credenciales=JsonConvert.DeserializeObject<Credenciales>(File.ReadAllText(path));
         		ClientId=credenciales.Web.ClientId;
         		ClientSecret=credenciales.Web.ClientSecret;
-        		RedirectUriLocalhost=credenciales.Web.RedirectUris[redirectUriIndex];
+        		RedirectUri=credenciales.Web.RedirectUris[redirectUriIndex];
         	}
         }
 
