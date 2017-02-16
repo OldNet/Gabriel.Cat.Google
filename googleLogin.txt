@@ -1,0 +1,35 @@
+<HTML>  
+    <Head>  
+        <script src="jquery.js" temp_src="jquery.js" type="text/javascript"></script>  
+        <script language="javascript" type="text/javascript">  
+    var OAUTHURL = 'https://accounts.google.com/o/oauth2/auth?';  
+    var VALIDURL = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=';  
+    var SCOPE = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';  
+    var CLIENTID = '#ClientId#';  
+    var REDIRECT = '#UrlRedirigir#';  
+    var LOGOUT = 'http://accounts.google.com/Logout';  
+    var TYPE = 'code';  
+    var _url = OAUTHURL + 'scope=' + SCOPE + '&amp;client_id=' + CLIENTID + '&amp;redirect_uri=' + REDIRECT + '&amp;response_type=' + TYPE;  
+    var acToken;  
+    var tokenType;  
+    var expiresIn;  
+    var user;  
+    var loggedIn = false;  
+    function login()  
+    {  
+  
+      window.location.replace(_url);  
+
+    }  
+
+  
+</script>  
+    </Head>  
+    <body>  
+        <a href='#' onClick='login();' id="loginText"' ><img src="https://developers.google.com/accounts/images/sign-in-with-google.png" width="150" height="50"/></a>
+        <a href="#" temp_href="#" style="display:none" id="logoutText" target='myIFrame' onclick="myIFrame.location='https://www.google.com/accounts/Logout'; startLogoutPolling();return false;"> Click here to logout </a>  
+        <iframe name='myIFrame' id="myIFrame" style='display:none'></iframe>  
+        <div id='uName'></div>  
+        <img src='' id='imgHolder'/>  
+    </body>  
+</HTML>
